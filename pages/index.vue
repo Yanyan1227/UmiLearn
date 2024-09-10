@@ -2,92 +2,67 @@
  * @Author: uyinyan yinyan2323@qq.com
  * @Date: 2024-08-27 14:37:59
  * @LastEditors: uyinyan yinyan2323@qq.com
- * @LastEditTime: 2024-08-27 19:57:58
+ * @LastEditTime: 2024-09-05 17:49:52
  * @FilePath: /umi/umiNuxt/pages/index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
-<template>
-  <div>
-    Hellow World
-    {{ testData }}
-    {{ testData1 }}
-    <button>
-      <NuxtLink to="/test">Home page</NuxtLink>
-      跳转
-    </button>
+<template lang="pug">
+//- div.test
+//-   div h1 {{ testD }}
 
-    <NuxtLogo>
-
-    </NuxtLogo>
-  </div>
-
+//-   div.testSwiper(data-aos="fade-up" data-aos-duration="800")
+//-       myBanner(data-aos="fade-banner-wrapper"
+//-         data-aos-duration="600"
+//-         data-aos-easing="ease-in-out")
+Scene(:data="automatic.sections.scene")
 </template>
 
 <script>
+import NuxtLogo from '../components/NuxtLogo.vue';
+// import myBanner from '../components/myBanner.vue';
+// import SceneModule from '../components/Scene-module.vue';
+import Scene from '../components/Scene.vue';
+import automatic from '../config/automatic.conf';
 export default {
-  data() {
-    return {
-      testData: [],
-      testData1: []
+  components: {
+        Scene
+    },
+    data () {
+        return {
+            automatic,
+        }
+    },
+  computed: {
+    testD() {
+      return this.$store.state.data
     }
   },
-  async asyncData() {
-    let data = []
-    data = await fetch(
-      'https://jsonplaceholder.typicode.com/todos/1'
-    ).then(res => res.json()).then(json => data = json)
-    console.log(data, 'datadata1111')
-    // 1. asyncData fetch来回切换路由，process.server和process.client的执行结果
-    // 2. asyncData fetch强刷页面，process.server和process.client的执行结果
-    console.log(process.server, 'asyncData-server')
-    console.log(process.client, 'asyncData-client')
-    // await new Promise(resolve => {
-    //   setTimeout(() => {
-    //     data = [12]
-    //     resolve()
-    //   }, 1000 * 3600)
-    // })
+  created() {
+    console.log("123");
+  },
+  // layout: 'blog',
 
-    // 一个个执行会阻塞
-    return {
-      testData: data
-    }
-  },
-  // 正确
-  async fetch() {
-    let testData1 = null
-    await fetch(
-      'https://jsonplaceholder.typicode.com/todos/1'
-    ).then(res => res.json()).then(json => testData1 = json)
-    testData1.qaz = '>>>'
-    this.testData1 = testData1
-    console.log(this, 'vue')
-  },
-  // 错误典范
-  async fetch() {
-    let testData = await fetch(
-      'https://jsonplaceholder.typicode.com/todos/1'
-    ).then(res => res.json())
-    testData = this.testData
-    return {
-      testData
-    }
-  }
+  // 注意这里要和middleware文件名一致
+  middleware: 'auth'
+
+  // validate() {
+  //   // 这里写验证逻辑
+  //   let data = 0
+  //   if (data) {
+  //     return false
+  //   }
+  // },
 }
-// 3. asyncData fetch可以在什么页面层级去用？页面和组件去是试试看
-// 4. 同1和2, 也看看fetch的打印结果
-// 5. asyncData和fetch的区别
-// 6. vue2去补
-//   async fetch() {
-//     console.log(process.server, 'fetch-server')
-//     console.log(process.client, 'fetch-client')
-//     await new Promise(resolve => {
-//       setTimeout(() => {
-//         data = [12]
-//         resolve()
-//       }, 1000 * 3600)
-//     })
-//   }
-
-// 并行
 </script>
+
+<style lang="scss">
+.testSwiper{
+  width: 500px;
+  height: 200px;
+}
+.test{
+  width: 200px;
+  height: 900px;
+  color: red;
+}
+</style>
